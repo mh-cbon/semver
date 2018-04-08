@@ -73,10 +73,17 @@ func TestConstraintCheck(t *testing.T) {
 		{"<=1.1", "1.1.0", true},
 		{"<=1.1", "1.1.1", false},
 		{">0", "0.0.1-alpha", true},
+		{">0.0", "0.0.1-alpha", true},
+		{">0.0.0", "0.0.1-alpha", true},
+		{">0", "0.0.0-alpha", true},
+		{">0.0", "0.0.0-alpha", true},
+		{">0.0.0", "0.0.0-alpha", true},
 		{">=0", "0.0.1-alpha", true},
 		{">0", "0", false},
 		{">=0", "0", true},
 		{"=0", "1", false},
+		{">=v1.8.0", "v1.9.4-gke.1", false},         // Because the constraint does not contains prereleases, the given version won t be tested against it. For your safety.
+		{">=v1.8.0-whatever", "v1.9.4-gke.1", true}, // However, that comparison will yield the expected result.
 	}
 
 	for _, tc := range tests {
